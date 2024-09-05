@@ -16,7 +16,7 @@ def create_app():
         allow_headers=["*"],
     )
     app.include_router(main_router, prefix="/api", tags=["main"])
-    app.include_router(npc_router, prefix="/api/npc", tags=["npc"])  # 新增NPC路由
+    app.include_router(npc_router, prefix="/npc", tags=["npc"])  # 新增NPC路由
 
     return app
 

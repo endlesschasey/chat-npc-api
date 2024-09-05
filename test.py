@@ -1,9 +1,10 @@
 import ollama
+OLLAMA_HOST = "http://localhost:11434"
 
-client = ollama.Client(host="http://localhost:11434")
+client = ollama.Client(host=OLLAMA_HOST)
 
 response = client.chat(
-    model="qwen2:1.5b",
+    model="llama3",
     messages=[
         {"role": "user", "content": "你好，世界"}
     ]

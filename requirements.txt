@@ -7,3 +7,12 @@ asyncio
 cos-python-sdk-v5
 accelerate
 Pillow
+pytest
+pytest-asyncio
+pytest-cov
+pytest-mock
+pytest-xdist
+pytest-timeout
+pytest-rerunfailures
+pytest-sugar
+pytest

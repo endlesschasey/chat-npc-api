@@ -1,14 +1,23 @@
 import ollama
+from ollama import Message
 
-OLLAMA_HOST = "http://localhost:11434"
-client = ollama.Client(host=OLLAMA_HOST)
+class Agent:
+    def __init__(self, system_prompt: str) -> None:
+        OLLAMA_HOST = "http://localhost:11434"
+        self.client = ollama.Client(host=OLLAMA_HOST)
+        self.system_prompt = system_prompt
 
-def generate_response(messages, model="qwen2:7b"):
-    try:
-        response = client.chat(
-            model=model,
-            messages=messages
-        )
-        return response['message']['content']
-    except Exception as e:
-        raise Exception(f"Error generating response: {str(e)}")
+    def chat(self, messages, model="qwen2:1.5b"):
+        try:
+            if messages[0]['role'] != 'system':
+                messages = [
+                    {"role": "system", "content": self.system_prompt},
+                    *messages
+                ]
+            response = self.client.chat(
+                model=model,
+                messages=messages
+            )
+            return response['message']['content']
+        except Exception as e:
+            raise Exception(f"Error generating response: {str(e)}")
