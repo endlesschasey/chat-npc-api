@@ -19,6 +19,9 @@ class NPC:
         # 对话实例
         self.agent = Agent()
 
+    def _create_system_prompt(self):
+        pass
+
     async def add_message(self, conversation_id: Optional[str] = None, message: Optional[str] = None) -> Tuple[str, str]:
         if conversation_id is None:
             conversation_id = str(uuid.uuid4())
