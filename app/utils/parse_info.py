@@ -62,11 +62,11 @@ def parse_npc_file(file_path):
     goal_and_background = parse_goal_and_background(content)
     dialogues = parse_dialogues(content)
 
-    print("基本信息:", basic_info)
-    print("\n个人介绍:", personal_intro)
-    print("\n性格特征:", personality_traits)
-    print("\n角色目标和背景:", goal_and_background)
-    print("\n台词举例:", dialogues)
+    # print("基本信息:", basic_info)
+    # print("\n个人介绍:", personal_intro)
+    # print("\n性格特征:", personality_traits)
+    # print("\n角色目标和背景:", goal_and_background)
+    # print("\n台词举例:", dialogues)
 
     if not dialogues:
         print("警告：未解析到任何台词。请检查文件格式是否正确。")

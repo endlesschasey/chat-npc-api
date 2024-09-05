@@ -44,12 +44,7 @@ class NPCService:
 
     def get_npc_list(self) -> List[Dict[str, str]]:
         return [npc for npc in self.npcs.keys()]
-
-    def start_conversation(self, npc_id: str) -> str:
-        if npc_id not in self.conversations:
-            self.conversations[npc_id] = []
-        return npc_id
-
+    
     async def send_message(self, message: NPCMessage) -> NPCResponse:
         npc = self.get_npc(message.name)
         if not npc:
@@ -58,8 +53,5 @@ class NPCService:
         response = await npc.add_message(message.conversation_id, message.message)
 
         return response
-
-    def get_conversation_history(self, npc_id: str) -> List[Dict[str, str]]:
-        return self.conversations.get(npc_id, [])
 
 npc_service = NPCService()

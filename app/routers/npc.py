@@ -14,10 +14,6 @@ async def list_npcs():
 async def chat_with_npc(message: NPCMessage):
     try:
         response = await npc_service.send_message(message)
-        return response
+        return NPCResponse(message=response[0], conversation_id=response[1])
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-
-@router.get("/{npc_id}/history", response_model=List[dict])
-async def get_chat_history(npc_id: str):
-    return npc_service.get_conversation_history(npc_id)
