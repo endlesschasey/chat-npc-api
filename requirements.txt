@@ -1,0 +1,9 @@
+langchain
+aiocache
+aiohttp
+fastapi
+uvicorn
+asyncio
+cos-python-sdk-v5
+accelerate
+Pillow
