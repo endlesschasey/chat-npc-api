@@ -7,7 +7,7 @@ class Agent:
         self.client = ollama.Client(host=OLLAMA_HOST)
         self.system_prompt = system_prompt
 
-    async def chat(self, messages, model="qwen2"):
+    async def chat(self, messages, model="qwen2:7b"):
         try:
             if messages[0]['role'] != 'system':
                 messages = [

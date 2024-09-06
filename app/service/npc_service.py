@@ -1,6 +1,8 @@
 import os
+import uuid
+import asyncio
 from typing import Dict, List
-from app.models.npc import NPCMessage, NPCResponse
+from app.models.npc import *
 from app.utils.parse_info import parse_npc_file
 from app.service.npc_obj import NPC
 
@@ -28,6 +30,7 @@ class NPCService:
                 file_path = os.path.join(folder_path, filename)
                 npc_data = parse_npc_file(file_path)
                 npc = NPC(
+                    role_id=npc_data["basic_info"].get("角色ID"),
                     name=npc_data["basic_info"].get("名字"),
                     description=npc_data["basic_info"].get("印象描述"),
                     personality=npc_data["basic_info"].get("性格简述"),
@@ -50,8 +53,25 @@ class NPCService:
         if not npc:
             raise ValueError("NPC不存在")
 
-        response = await npc.add_message(message.conversation_id, message.message)
+        response, conversation_id = await npc.add_message(message.conversation_id, message.message)
 
-        return response
+        # 提交一个线程，将NPC的对话生成音频
+        if message.if_audio:
+            audio_id = str(uuid.uuid4())
+            asyncio.create_task(npc.generate_audio(response, audio_id))  
+
+        return NPCResponse(message=response, conversation_id=conversation_id, audio_id=audio_id)
+
+    async def get_npc_audio(self, request: AudioRequest) -> str:
+        npc = self.get_npc(request.name)
+        if not npc:
+            raise ValueError("NPC不存在")
+        return await npc.get_audio_url(request.audio_id)
+
+    async def audio_callback(self, callback: AudioCallback):
+        npc = self.get_npc(callback.name)
+        if not npc:
+            raise ValueError("NPC不存在")
+        await npc.audio_callback(callback.audio_id, callback.status, callback.url)
 
 npc_service = NPCService()
