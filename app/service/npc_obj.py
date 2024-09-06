@@ -4,7 +4,7 @@ import aiohttp
 import asyncio
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
-from app.utils.ollama_client import Agent
+from app.utils.agent import Agent
 from config.settings import Setting
 from loguru import logger
 
