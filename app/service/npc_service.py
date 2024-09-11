@@ -2,9 +2,12 @@ import os
 import uuid
 import asyncio
 from typing import Dict, List
+from loguru import logger
+
 from app.models.npc import *
 from app.utils.parse_info import parse_npc_file
 from app.service.npc_obj import NPC
+
 
 class NPCService:
     # 单例模式
@@ -55,10 +58,19 @@ class NPCService:
 
         response, conversation_id = await npc.add_message(message.conversation_id, message.message)
 
+        # 检测心情词
+        if "b:" in response and "f:" in response:
+            clear_response = response.split("(")[0].strip()
+            logger.info(f"对话文本: {response}")
+            logger.info(f"语音文本: {clear_response}")
+        else:
+            clear_response = response
+
         # 提交一个线程，将NPC的对话生成音频
+        audio_id = None
         if message.if_audio:
             audio_id = str(uuid.uuid4())
-            asyncio.create_task(npc.generate_audio(response, audio_id))  
+            asyncio.create_task(npc.generate_audio(clear_response, audio_id))  
 
         return NPCResponse(message=response, conversation_id=conversation_id, audio_id=audio_id)
 

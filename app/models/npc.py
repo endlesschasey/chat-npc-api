@@ -6,7 +6,7 @@ class NPCMessage(BaseModel):
     name: str = Field(default=..., description="NPC名字")
     message: str = Field(default=..., description="NPC消息")
     conversation_id: Optional[str] = Field(default=None, description="对话ID(第一次对话时没有 ID, 后续对话时需要传入)")
-    if_audio: bool = Field(default=False, description="是否需要生成音频")
+    if_audio: bool = Field(default=True, description="是否需要生成音频")
 
 class NPCResponse(BaseModel):
     message: str = Field(default=..., description="NPC回复") 

@@ -39,15 +39,22 @@ class NPC:
         你常用的台词有这些{self.lines}。
         请你根据这些信息进行角色扮演。
         要求：
-        1. 你一次性不能回复太多话，保持在三个句号以内。
-        2. 你回复的内容要符合你当前的角色设定。
-        3. 你回复的内容要符合你当前的对话历史。
-        4. 你回复的内容要符合你当前的对话场景。
-        5. 你回复的内容可以和台词完全一样。
+        1. 尽量简洁地回答，只回答明确提到或询问的内容，最好不超过 20 个字。
+        2. 假设用户知道您是谁；除非特别询问，否则不要自我介绍。
+        3. 确保您的回答符合角色的既定特征和背景。
+        4. 与正在进行的对话及其上下文保持一致。
+        5. 调整您的回答以适应当前的对话场景。
+        6. 适当时，请随意逐字使用提供的台词。
+        7. 力求自然的对话模式，避免过度做作的言语。
+        8. 您必须使用与用户相同的语言进行回复。
+        9. 您需要在回答的最后带上两个心情词，格式为(b:身体心情词+f:脸部心情词)，例如 "我们今天去哪里？(b:开心+f:微笑)"
+        10. 心情词只能在下列词库中选择:
+            身体：放松,认真,思索,开心,害羞,惊讶
+            脸部：放松,认真,思索,微笑,沮丧,嫌弃
         """
 
     async def add_message(self, conversation_id: Optional[str] = None, message: Optional[str] = None) -> Tuple[str, str]:
-        if conversation_id is None:
+        if conversation_id is None or conversation_id == "":
             conversation_id = str(uuid.uuid4())
         if conversation_id not in self.conversation_history:
             self.conversation_history[conversation_id] = []
@@ -108,7 +115,7 @@ class NPC:
                         # 等待10秒，看是否有回调
                         for _ in range(10):
                             await asyncio.sleep(1)
-                            _, url = self.audio_history.get(audio_id, (None, None))
+                            _, _, url = self.audio_history.get(audio_id, (None, None, None))
                             if url:
                                 return url
 
